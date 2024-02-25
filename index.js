@@ -2,7 +2,7 @@
   'use strict';
 
   var chalk = require('chalk');
-  var CLIEngine = require("eslint").CLIEngine;
+  var ESLint = require("eslint").ESLint;
 
   var ESLintReporter = function(loggerFactory, config) {
     var eslintPreprocessorConfig = config.eslint || {};
@@ -15,7 +15,7 @@
       showWarnings: getOptionWithFallback('showWarnings', true),
       stopAboveErrorThreshold: getOptionWithFallback('stopAboveErrorThreshold', false)
     };
-    var cli = new CLIEngine(options.engine);
+    var eslint = new ESLint(options.engine);
     var totalErrorCount = 0;
     chalk.enabled = config.colors !== false;
 
@@ -94,7 +94,7 @@
     }
 
     return function(content, file, done) {
-      var report = cli.executeOnFiles([file.path]);
+      var report = eslint.lintFiles([file.path]);
 
       log.debug('Processing "%s".', file.originalPath);
       if(shouldStop(report)) {
